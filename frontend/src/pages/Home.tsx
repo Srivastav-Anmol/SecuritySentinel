@@ -138,7 +138,7 @@ const Home: React.FC = () => {
       </section>
       
       {/* How It Works Section */}
-      <section className="py-16 bg-secondary/30">
+      <section className="py-16 bg-secondary/30" id='howItWorks'>
         <div className="container">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>

@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
-import { Upload, RefreshCw, AlertCircle, CheckCircle, PlusCircle, Info, Download } from 'lucide-react';
+import { Upload, RefreshCw, AlertCircle, CheckCircle, PlusCircle, Info, Download, X } from 'lucide-react';
 
 const DetectNow: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
   const [detectionResults, setDetectionResults] = useState<null | { detected: boolean; confidence: number }>(null);
+  const [showAlert, setShowAlert] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Handle file selection
@@ -13,6 +14,7 @@ const DetectNow: React.FC = () => {
     if (files && files.length > 0) {
       setSelectedFile(files[0]);
       setDetectionResults(null);
+      setShowAlert(false);
     }
   };
 
@@ -20,6 +22,7 @@ const DetectNow: React.FC = () => {
   const handleNewAnalysis = () => {
     setSelectedFile(null);
     setDetectionResults(null);
+    setShowAlert(false);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
       fileInputRef.current.click(); // Trigger file input dialog
@@ -30,6 +33,7 @@ const DetectNow: React.FC = () => {
   const startDetection = async () => {
     setIsDetecting(true);
     setDetectionResults(null);
+    setShowAlert(false);
 
     let imageBlob: Blob | null = null;
 
@@ -58,10 +62,14 @@ const DetectNow: React.FC = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        setDetectionResults({
+        const results = {
           detected: data.detected,
           confidence: data.confidence,
-        });
+        };
+        setDetectionResults(results);
+        if (results.detected) {
+          setShowAlert(true);
+        }
       } else {
         throw new Error(data.error || 'Detection failed');
       }
@@ -128,6 +136,44 @@ const DetectNow: React.FC = () => {
 
   return (
     <div className="py-12 bg-gradient-to-b from-background to-secondary/5 min-h-screen">
+      {/* Alert Modal */}
+      {showAlert && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-background rounded-lg p-6 max-w-md w-full mx-4 shadow-2xl animate-slide-up relative">
+            {/* Pulsing border effect */}
+            <div className="absolute inset-0 rounded-lg animate-pulse-border" />
+            
+            <div className="relative">
+              <div className="flex justify-between items-start mb-4">
+                <div className="flex items-center">
+                  <div className="bg-alert/20 p-2 rounded-full mr-3 animate-pulse-icon">
+                    <AlertCircle className="h-6 w-6 text-alert" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-alert">Suspicious Activity Detected!</h3>
+                </div>
+                <button
+                  onClick={() => setShowAlert(false)}
+                  className="text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Our AI system has detected suspicious activity in the uploaded video.
+              </p>
+              <div className="flex justify-end">
+                <button
+                  onClick={() => setShowAlert(false)}
+                  className="btn btn-primary px-6 py-3 text-base"
+                >
+                  Acknowledge
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="container max-w-4xl animate-fade-in">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
@@ -298,6 +344,45 @@ const DetectNow: React.FC = () => {
           )}
         </div>
       </div>
+
+      <style>
+        {`
+          @keyframes pulse-border {
+            0% {
+              box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+            50% {
+              box-shadow: 0 0 0 15px rgba(239, 68, 68, 0);
+            }
+            100% {
+              box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+          }
+
+          @keyframes pulse-icon {
+            0% {
+              transform: scale(1);
+              opacity: 1;
+            }
+            50% {
+              transform: scale(1.2);
+              opacity: 0.7;
+            }
+            100% {
+              transform: scale(1);
+              opacity: 1;
+            }
+          }
+
+          .animate-pulse-border {
+            animation: pulse-border 1.5s ease-in-out infinite;
+          }
+
+          .animate-pulse-icon {
+            animation: pulse-icon 1.5s ease-in-out infinite;
+          }
+        `}
+      </style>
     </div>
   );
 };

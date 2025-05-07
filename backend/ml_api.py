@@ -14,7 +14,7 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'frontend', 'model', 'model.h5')
 model = load_model(MODEL_PATH, compile=False)
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict',methods=['POST'])
 def predict():
     if 'file' not in request.files:
         return jsonify({'error': 'No file part'}), 400
@@ -28,13 +28,13 @@ def predict():
         img_array = np.expand_dims(img_array, axis=0)
         prediction = model.predict(img_array)
         confidence = float(prediction[0][0]) * 100
-        detected = confidence > 50
+        detected = confidence > 56
         return jsonify({
             'detected': detected,
-            'confidence': round(confidence, 2)
+            'confidence': round(confidence,4)
         })
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({'error': str(e)}),500
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True) 
+if __name__=='__main__':
+    app.run(host='0.0.0.0',port=5001,debug=True) 

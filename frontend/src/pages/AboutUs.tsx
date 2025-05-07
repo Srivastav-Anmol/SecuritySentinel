@@ -11,7 +11,6 @@ interface TeamMember {
   joined: string;
   github: string;
   linkedin: string;
-  email: string;
 }
 
 const AboutUs: React.FC = () => {
@@ -21,48 +20,47 @@ const AboutUs: React.FC = () => {
       name: "Divyanshu Sharma",
       role: "Model Training and Implementation",
       bio: "Divyanshu specializes in computer vision algorithms. He leads our core detection technology development.",
-      image: "https://images.pexels.com/photos/3786525/pexels-photo-3786525.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/dev.jpg",
       location: "Tundla,UP",
       joined: "2020",
-      github: "#",
-      linkedin: "#",
-      email: "sarah@securitysentinel.com"
+      github: "https://github.com/Divyanshugdgps",
+      linkedin: "https://www.linkedin.com/in/divyanshu-sharma-bb2573213?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+
     },
     {
       id: 2,
       name: "Ayushi",
       role: "Backend Developer",
       bio: "Ayushi is an expert in building secure, scalable backend systems. He manages our real-time detection infrastructure and data processing pipelines.",
-      image: "https://images.pexels.com/photos/2379005/pexels-photo-2379005.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/ayushi.jpg",
       location: "Noida, UP",
       joined: "2021",
-      github: "#",
-      linkedin: "#",
-      email: "michael@securitysentinel.com"
+      github: "https://github.com/ayushii055",
+      linkedin: "https://www.linkedin.com/in/ayushi-~-ba53832ba/",
+
     },
     {
       id: 3,
       name: "Kshitij Tripathi",
       role: "Frontend Developer",
       bio: "Kshitij creates beautiful, intuitive user interfaces that make complex security systems accessible and easy to use for non-technical users.",
-      image: "https://images.pexels.com/photos/3776720/pexels-photo-3776720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/kshitij.jpg",
       location: "Chennai, TN",
       joined: "2022",
       github: "#",
-      linkedin: "#",
-      email: "aisha@securitysentinel.com"
+      linkedin: "https://www.linkedin.com/in/kshitij-tripathi-3a8903287",
     },
     {
       id: 4,
       name: "Abhay Singh",
       role: "Deployement & Documentation",
       bio: "With a background in retail loss prevention, Abhay bridges the gap between technology and practical security implementation in retail environments.",
-      image: "https://images.pexels.com/photos/837358/pexels-photo-837358.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+      image: "/abhay.jpg",
       location: "Gr. Noida, UP",
       joined: "2020",
       github: "#",
       linkedin: "#",
-      email: "james@securitysentinel.com"
+
     }
   ];
 
@@ -84,7 +82,7 @@ const AboutUs: React.FC = () => {
               <div className="flex flex-col md:flex-row h-full">
                 <div className="md:w-2/5 h-60 md:h-auto overflow-hidden">
                   <img 
-                    //src={member.image} 
+                    src={member.image} 
                     alt={member.name} 
                     className="w-full h-full object-cover transition-transform hover:scale-105 duration-500"
                   />
@@ -129,13 +127,7 @@ const AboutUs: React.FC = () => {
                     >
                       <Linkedin className="h-4 w-4" />
                     </a>
-                    <a 
-                      href={`mailto:${member.email}`} 
-                      className="p-2 rounded-full bg-secondary/50 hover:bg-primary/20 transition-colors"
-                      aria-label={`Email ${member.name}`}
-                    >
-                      <Mail className="h-4 w-4" />
-                    </a>
+                  
                   </div>
                 </div>
               </div>
